@@ -8,6 +8,43 @@ COLOR_BLUE = (0, 0, 0)
 COLOR_NAVY = (0, 0, 0)
 COLOR_RED = (255, 65, 54)
 
+class SimpleText:
+    x = 0
+    y = 0
+    text = ''
+    size = 20
+    color = COLOR_BLACK
+    fontFace = 'freesansbold.ttf'
+    font = None
+
+    surface = None
+    # rectangle = None
+    screen = None
+
+    def __init__(self, screen, text, x_y, size = 20, color = COLOR_BLACK):
+        self.x, self.y = x_y
+        self.text = text
+        self.size = size
+        self.color = color
+        self.screen = screen
+        self.update()
+
+    def update(self):
+        self.font = pygame.font.Font(self.fontFace, self.size)
+        self.surface = self.font.render(self.text, True, self.color)
+        # self.rectangle = self.surface.get_rect()
+        # self.rectangle.center = self.x, self.y
+        return self
+
+    def set_text(self, text):
+        self.text = text
+        self.update()
+        return self
+
+    def visualize(self):
+        self.screen.blit(self.surface, (self.x, self.y))
+
+
 class StaticAsset:
     x = 0
     y = 0
