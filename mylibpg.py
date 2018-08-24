@@ -64,9 +64,9 @@ class StaticAsset:
     def __init__(self, screen, path, x_y=(0, 0)):
         source = pygame.image.load(path)
         self.screen = screen
-        self.place_middle(x_y)
         self.source = source
         self.width, self.height = source.get_rect().size
+        self.place_middle(x_y)
 
     def place_middle(self, x_y):
         x, y = x_y
