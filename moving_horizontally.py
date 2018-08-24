@@ -16,7 +16,7 @@ ended = False
 speed = 0
 
 w = mylibpg.StaticAsset(screen, './assets/world_70.png', (50, 200))
-t = mylibpg.SimpleText(screen, 'Vel: 0', (WIDTH - 100, HEIGHT - 50), 20, mylibpg.COLOR_RED)
+t = mylibpg.SimpleText(screen, 'Vel: 0', (WIDTH - 120, HEIGHT - 50), 20, mylibpg.COLOR_RED)
 v = mylibpg.Vector(screen, (0, 0), 0, 90)
 
 while not ended:
@@ -37,14 +37,14 @@ while not ended:
 
     # Calculate the next position
     if speed != 0:
-        w.move(v.calculate(w.pos(), speed, 90))
+        w.move(v.calculate(w.pos(), speed * (elapsed / 1000), 90))
 
-    t.set_text('Vel: ' + str(speed)).visualize()
+    t.set_text('Vel: ' + str(speed) + ' px/s').visualize()
     w.visualize()
 
     pygame.display.update()
     timer += clock.get_time()
-    clock.tick(10)
+    clock.tick(24)
     # pygame.display.flip()
 
 
