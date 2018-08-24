@@ -1,6 +1,5 @@
 import pygame
 import mylibpg
-import math
 
 pygame.init()
 
