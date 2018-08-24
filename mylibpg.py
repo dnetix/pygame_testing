@@ -9,6 +9,10 @@ COLOR_BLUE = (0, 116, 217)
 COLOR_NAVY = (0, 31, 63)
 COLOR_RED = (255, 65, 54)
 
+KEY_UP = 273
+KEY_DOWN = 274
+KEY_RIGHT = 275
+KEY_LEFT = 276
 
 class SimpleText:
     x = 0
