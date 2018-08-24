@@ -18,7 +18,6 @@ class SimpleText:
     font = None
 
     surface = None
-    # rectangle = None
     screen = None
 
     def __init__(self, screen, text, x_y, size = 20, color = COLOR_BLACK):
@@ -32,8 +31,6 @@ class SimpleText:
     def update(self):
         self.font = pygame.font.Font(self.fontFace, self.size)
         self.surface = self.font.render(self.text, True, self.color)
-        # self.rectangle = self.surface.get_rect()
-        # self.rectangle.center = self.x, self.y
         return self
 
     def set_text(self, text):
