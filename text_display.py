@@ -17,7 +17,7 @@ timer = 0
 ended = False
 
 t = mylibpg.SimpleText(screen, 'Testing', (30, 30), 20, mylibpg.COLOR_RED)
-t.visualize()
+t.set_font('./assets/Optima.ttc')
 
 while not ended:
 
@@ -27,7 +27,6 @@ while not ended:
 
     screen.fill(mylibpg.COLOR_BLACK)
 
-    # t.set_text('Time elapsed: ' + str(math.floor(timer / 1000))).visualize()
     t.set_text('Time elapsed: ' + str(timer / 1000)).visualize()
 
     pygame.display.update()

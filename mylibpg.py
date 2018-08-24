@@ -41,6 +41,11 @@ class SimpleText:
         self.update()
         return self
 
+    def set_font(self, font):
+        self.fontFace = font
+        self.update()
+        return self
+
     def visualize(self):
         self.screen.blit(self.surface, (self.x, self.y))
 
