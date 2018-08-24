@@ -4,8 +4,8 @@ import pygame
 
 COLOR_WHITE = (255, 255, 255)
 COLOR_BLACK = (0, 0, 0)
-COLOR_BLUE = (0, 0, 0)
-COLOR_NAVY = (0, 0, 0)
+COLOR_BLUE = (0, 116, 217)
+COLOR_NAVY = (0, 31, 63)
 COLOR_RED = (255, 65, 54)
 
 class SimpleText:
