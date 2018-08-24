@@ -97,7 +97,7 @@ class Vector:
         return self
 
     def visualize(self):
-        x = self.x + (math.sin(math.radians(self.angle)) * self.length)
-        y = self.y + (math.cos(math.radians(self.angle)) * self.length) * -1
-        pygame.draw.circle(self.screen, self.color, (int(x), int(y)), 5)
-        pygame.draw.line(self.screen, self.color, (self.x, self.y), (x, y), 2)
+        x = self.x + (round(math.sin(math.radians(self.angle)), 6) * self.length)
+        y = self.y + (round(math.cos(math.radians(self.angle)), 6) * self.length) * -1
+        pygame.draw.circle(self.screen, self.color, (int(x), int(y)), 4)
+        pygame.draw.line(self.screen, self.color, (self.x, self.y), (x, y), 1)
