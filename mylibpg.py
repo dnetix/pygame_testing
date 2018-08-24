@@ -1,4 +1,5 @@
 import pygame
+import math
 
 # PyGame reusable modules
 
@@ -75,3 +76,28 @@ class StaticAsset:
 
     def visualize(self):
         self.screen.blit(self.source, (self.x, self.y))
+
+class Vector:
+    x = 0
+    y = 0
+    length = 0
+    angle = 0
+    color = COLOR_RED
+    screen = None
+
+    def __init__(self, screen, x_y, length, angle, color = COLOR_NAVY):
+        self.x, self.y = x_y
+        self.length = length
+        self.angle = angle
+        self.screen = screen
+        self.color = color
+
+    def set_angle(self, angle):
+        self.angle = angle
+        return self
+
+    def visualize(self):
+        x = self.x + (math.sin(math.radians(self.angle)) * self.length)
+        y = self.y + (math.cos(math.radians(self.angle)) * self.length) * -1
+        pygame.draw.circle(self.screen, self.color, (int(x), int(y)), 5)
+        pygame.draw.line(self.screen, self.color, (self.x, self.y), (x, y), 2)
