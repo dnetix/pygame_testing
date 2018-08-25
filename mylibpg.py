@@ -1,5 +1,6 @@
 import pygame
 import math
+import numpy as np
 
 # PyGame reusable modules
 
@@ -16,6 +17,7 @@ KEY_LEFT = 276
 KEY_A = 97
 KEY_Q = 113
 
+G = 6.674e-11
 
 class Positionable:
     x = 0
@@ -196,3 +198,109 @@ class Vector(Presentable):
         if self.length > 0:
             pygame.draw.circle(self.screen, self.color, (int(self.res_x), int(self.res_y)), 4)
             pygame.draw.line(self.screen, self.color, self.position(), self.des(), 1)
+
+
+class SystemParticle(Positionable):
+    mass = 1
+    radius = 1
+    acceleration = (0, 0)
+    velocity = (0, 0)
+    static = False
+    asset = None
+
+    def __init__(self, x_y, mass, radius, a, v, static = False):
+        self.move(x_y)
+        self.set_radius(radius)
+        self.set_mass(mass)
+        self.set_acceleration(a)
+        self.set_velocity(v)
+        self.static = static
+
+    def set_mass(self, mass):
+        self.mass = mass
+        return self
+
+    def set_acceleration(self, a):
+        self.acceleration = a
+        return self
+
+    def set_velocity(self, v):
+        self.velocity = v
+        return self
+
+    def set_radius(self, radius):
+        self.radius = radius
+        return self
+
+    def set_asset(self, asset):
+        self.asset = asset
+        return self
+
+    def play(self, elapsed):
+        if elapsed != 0:
+            self.velocity = np.add(self.velocity, np.multiply(self.acceleration, elapsed))
+            self.x += self.velocity[0] * elapsed
+            self.y += self.velocity[1] * elapsed
+
+    def visualize(self, screen):
+        if self.asset is None:
+            pygame.draw.circle(screen, COLOR_RED, self.position(), 2)
+        else:
+            self.asset.move(self.position())
+            self.asset.visualize()
+
+
+class ReferenceSystem(Presentable):
+    size_x = 800
+    size_y = 800
+
+    # How many meters represents a pixel
+    scale = 1
+    time = 0
+
+    display_line = True
+
+    particles = []
+
+    def __init__(self, screen, x_y, sizes):
+        self.set_screen(screen)
+        self.move(x_y)
+        self.size_x, self.size_y = sizes
+
+    def set_scale(self, scale):
+        self.scale = scale
+        return self
+
+    def add_particle(self, particle):
+        pos = self.relative_position(particle.position())
+        particle.move(pos)
+        self.particles.append(particle)
+        return self
+
+    def relative_position(self, x_y):
+        return self.x + x_y[0], self.y - x_y[1]
+
+    def tick(self, elapsed):
+        p1 = self.particles[0]
+        p2 = self.particles[1]
+
+        x = Locator(p2, p1)
+        r = (x.distance() * self.scale) + p1.radius + p2.radius
+
+        # I have the magnitude of the acceleration
+        a = (G * p1.mass) / (r ** 2)
+        # and the angle
+        angle = x.angle()
+
+        acceleration = (a * round(math.sin(math.radians(angle)), 2), a * round(math.cos(math.radians(angle)), 2) * -1)
+        p2.set_acceleration(acceleration)
+        p2.play(elapsed)
+
+    def visualize(self):
+        if self.display_line:
+            pygame.draw.line(self.screen, COLOR_WHITE, (0, self.y), (self.size_x, self.y), 1)
+            pygame.draw.line(self.screen, COLOR_WHITE, (self.x, 0), (self.x, self.size_y), 1)
+
+        for particle in self.particles:
+            # Particle visualization
+            particle.visualize(self.screen)
