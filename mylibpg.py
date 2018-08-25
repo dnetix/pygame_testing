@@ -67,20 +67,14 @@ class Locator:
         if ca == 0 or co == 0:
             # Its a cardinal point
             if ca == 0:
-                return 90 if co > 0 else 270
+                return 180 if co > 0 else 0
             if co == 0:
-                return 180 if ca > 0 else 0
+                return 270 if ca > 0 else 90
 
         if co < 0:
-            if ca > 0:
-                zone = 1
-            else:
-                zone = 4
+            zone = 1 if ca > 0 else 4
         else:
-            if ca > 0:
-                zone = 2
-            else:
-                zone = 3
+            zone = 2 if ca > 0 else 3
 
         if zone == 1:
             co = abs(co)
