@@ -37,7 +37,7 @@ while not ended:
 
     # Calculate the next position
     if speed != 0:
-        w.move(v.calculate(w.pos(), speed * (elapsed / 1000), 90))
+        w.move(v.calculate(w.position(), speed * (elapsed / 1000), 90))
 
     t.set_text('Vel: ' + str(speed) + ' px/s').visualize()
     w.visualize()

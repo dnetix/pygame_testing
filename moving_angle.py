@@ -43,7 +43,7 @@ while not ended:
 
     # Calculate the next position
     if speed != 0:
-        w.move(v.calculate(w.pos(), speed * (elapsed / 1000), angle))
+        w.move(v.calculate(w.position(), speed * (elapsed / 1000), angle))
 
     ts.set_text('Vel: ' + str(speed) + ' px/s').visualize()
     ta.set_text('Angle: ' + str(angle) + 'º').visualize()

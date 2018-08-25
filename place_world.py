@@ -21,7 +21,7 @@ while not ended:
     for event in pygame.event.get():
         if event.type == pygame.MOUSEBUTTONDOWN:
             # Allows to place the asset where the mouse clicks
-            w.place_middle(event.pos)
+            w.move(event.pos)
             # visualize(event.pos[0], event.pos[1])
 
         if event.type == pygame.QUIT:

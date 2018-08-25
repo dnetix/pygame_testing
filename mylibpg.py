@@ -13,10 +13,31 @@ KEY_UP = 273
 KEY_DOWN = 274
 KEY_RIGHT = 275
 KEY_LEFT = 276
+KEY_A = 97
+KEY_Q = 113
 
-class SimpleText:
+class Positionable:
     x = 0
     y = 0
+
+    def move(self, x_y):
+        self.x, self.y = x_y
+        return self
+
+    def position(self):
+        return self.x, self.y
+
+class Presentable(Positionable):
+    screen = None
+
+    def set_screen(self, screen):
+        self.screen = screen
+        return self
+
+    def visualize(self):
+        pass
+
+class SimpleText(Presentable):
     text = ''
     size = 20
     color = COLOR_BLACK
@@ -24,14 +45,13 @@ class SimpleText:
     font = None
 
     surface = None
-    screen = None
 
     def __init__(self, screen, text, x_y, size=20, color=COLOR_BLACK):
-        self.x, self.y = x_y
+        self.set_screen(screen)
+        self.move(x_y)
         self.text = text
         self.size = size
         self.color = color
-        self.screen = screen
         self.update()
 
     def update(self):
@@ -53,45 +73,32 @@ class SimpleText:
         self.screen.blit(self.surface, (self.x, self.y))
 
 
-class StaticAsset:
-    x = 0
-    y = 0
+class StaticAsset(Presentable):
     width = 0
     height = 0
     source = None
-    screen = None
 
     def __init__(self, screen, path, x_y=(0, 0)):
         source = pygame.image.load(path)
-        self.screen = screen
+        self.set_screen(screen)
         self.source = source
         self.width, self.height = source.get_rect().size
-        self.place_middle(x_y)
-
-    def place_middle(self, x_y):
-        x, y = x_y
-        self.x = x - (self.width / 2)
-        self.y = y - (self.height / 2)
-
-    def pos(self):
-        return self.x, self.y
+        self.move(x_y)
 
     def scale(self, times):
         self.width = self.width * times
         self.height = self.height * times
-        self.source = pygame.transform.scale(self.source, (self.width, self.height))
-
-    def move(self, x_y):
-        self.x, self.y = x_y
+        self.source = pygame.transform.scale(self.source, (int(self.width), int(self.height)))
+        return self
 
     def visualize(self):
-        self.screen.blit(self.source, (self.x, self.y))
+        x = self.x - (self.width / 2)
+        y = self.y - (self.height / 2)
+        self.screen.blit(self.source, (x, y))
+        return self
 
 
-class Vector:
-    x = 0
-    y = 0
-
+class Vector(Presentable):
     res_x = 0
     res_y = 0
 
@@ -101,10 +108,9 @@ class Vector:
     screen = None
 
     def __init__(self, screen, x_y, length, angle, color=COLOR_NAVY):
-        self.x, self.y = x_y
+        self.set_screen(screen)
         self.length = length
         self.angle = angle
-        self.screen = screen
         self.color = color
         self.update()
 
@@ -112,9 +118,6 @@ class Vector:
         self.angle = angle
         self.update()
         return self
-
-    def pos(self):
-        return self.x, self.y
 
     def des(self):
         return self.res_x, self.res_y
@@ -133,4 +136,4 @@ class Vector:
 
     def visualize(self):
         pygame.draw.circle(self.screen, self.color, (int(self.res_x), int(self.res_y)), 4)
-        pygame.draw.line(self.screen, self.color, self.pos(), self.des(), 1)
+        pygame.draw.line(self.screen, self.color, self.position(), self.des(), 1)
