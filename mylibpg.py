@@ -108,6 +108,7 @@ class Vector(Presentable):
     screen = None
 
     def __init__(self, screen, x_y, length, angle, color=COLOR_NAVY):
+        self.move(x_y)
         self.set_screen(screen)
         self.length = length
         self.angle = angle
@@ -130,8 +131,7 @@ class Vector(Presentable):
     def calculate(self, x_y, length, angle):
         self.x, self.y = x_y
         self.length = length
-        self.angle = angle
-        self.update()
+        self.set_angle(angle)
         return self.des()
 
     def visualize(self):
