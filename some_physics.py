@@ -1,5 +1,6 @@
 import pygame
 import mylibpg
+import math
 
 pygame.init()
 
@@ -17,8 +18,12 @@ ended = False
 # Elements
 system = mylibpg.ReferenceSystem(screen, (WIDTH / 2, HEIGHT /2), (WIDTH, HEIGHT))
 
-world = mylibpg.SystemParticle((0, 0), 5.972e24, 6.371e6, (0, 0), (0, 0), True).set_asset(mylibpg.StaticAsset(screen, './assets/world_70.png', (0, 0)))
-asteroid = mylibpg.SystemParticle((300, 300), 100, 20, (0, 0), (0, 0), False).set_asset(mylibpg.StaticAsset(screen, './assets/asteroid.png', (0, 0)).scale(0.5))
+world = mylibpg.SystemParticle((0, 0), 5.972e24, mylibpg.EARTH_RADIUS, (0, 0), (0, 0), True).set_asset(mylibpg.StaticAsset(screen, './assets/world_70.png', (0, 0)))
+
+orbitalv = (math.sqrt((mylibpg.G * mylibpg.EARTH_MASS) / ((200 / 35) * mylibpg.EARTH_RADIUS)))
+orbitalv = orbitalv / (mylibpg.EARTH_RADIUS / 35)
+
+asteroid = mylibpg.SystemParticle((0, 200), 100, 20, (0, 0), (orbitalv, 0), False).set_asset(mylibpg.StaticAsset(screen, './assets/asteroid.png', (0, 0)).scale(0.5))
 
 system.add_particle(world).add_particle(asteroid)
 
@@ -44,7 +49,7 @@ while not ended:
 
     pygame.display.update()
     timer += clock.get_time()
-    clock.tick(24)
+    clock.tick(60)
 
 pygame.quit()
 quit()

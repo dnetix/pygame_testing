@@ -18,6 +18,8 @@ KEY_A = 97
 KEY_Q = 113
 
 G = 6.674e-11
+EARTH_MASS = 5.972e24
+EARTH_RADIUS = 6.731e6
 
 class Positionable:
     x = 0
@@ -238,6 +240,8 @@ class SystemParticle(Positionable):
 
     def play(self, elapsed):
         if elapsed != 0:
+            # 2000X Faster
+            elapsed *= 2000
             self.velocity = np.add(self.velocity, np.multiply(self.acceleration, elapsed))
             self.x += self.velocity[0] * elapsed
             self.y += self.velocity[1] * elapsed
@@ -255,7 +259,7 @@ class ReferenceSystem(Presentable):
     size_y = 800
 
     # How many meters represents a pixel
-    scale = 1
+    scale = EARTH_RADIUS / 35
     time = 0
 
     display_line = True
@@ -285,7 +289,7 @@ class ReferenceSystem(Presentable):
         p2 = self.particles[1]
 
         x = Locator(p2, p1)
-        r = (x.distance() * self.scale) + p1.radius + p2.radius
+        r = (x.distance() * self.scale)
 
         # I have the magnitude of the acceleration
         a = (G * p1.mass) / (r ** 2)
@@ -293,6 +297,7 @@ class ReferenceSystem(Presentable):
         angle = x.angle()
 
         acceleration = (a * round(math.sin(math.radians(angle)), 2), a * round(math.cos(math.radians(angle)), 2) * -1)
+        acceleration = np.multiply(acceleration, 1 / self.scale)
         p2.set_acceleration(acceleration)
         p2.play(elapsed)
 
