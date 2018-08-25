@@ -16,6 +16,7 @@ KEY_LEFT = 276
 KEY_A = 97
 KEY_Q = 113
 
+
 class Positionable:
     x = 0
     y = 0
@@ -27,6 +28,7 @@ class Positionable:
     def position(self):
         return self.x, self.y
 
+
 class Presentable(Positionable):
     screen = None
 
@@ -36,6 +38,59 @@ class Presentable(Positionable):
 
     def visualize(self):
         pass
+
+
+class Locator:
+    source = None
+    destination = None
+
+    def __init__(self, source: Positionable, destination: Positionable):
+        self.source = source
+        self.destination = destination
+
+    def distance(self):
+        sx, sy = self.source.position()
+        dx, dy = self.destination.position()
+        return math.sqrt((dx - sx) ** 2 + (dy - sy) ** 2)
+
+    def angle(self):
+        sx, sy = self.source.position()
+        dx, dy = self.destination.position()
+
+        co = dy - sy
+        ca = dx - sx
+
+        if ca == 0 or co == 0:
+            # Its a cardinal point
+            if ca == 0:
+                return 90 if co > 0 else 270
+            if co == 0:
+                return 180 if ca > 0 else 0
+
+        if co < 0:
+            if ca > 0:
+                zone = 1
+            else:
+                zone = 4
+        else:
+            if ca > 0:
+                zone = 2
+            else:
+                zone = 3
+
+        if zone == 1:
+            co = abs(co)
+            return 90 - math.degrees(math.atan2(co, ca))
+        elif zone == 2:
+            return 90 + math.degrees(math.atan2(co, ca))
+        elif zone == 3:
+            ca = abs(ca)
+            return 270 - math.degrees(math.atan2(co, ca))
+        elif zone == 4:
+            co = abs(co)
+            ca = abs(ca)
+            return 270 + math.degrees(math.atan2(co, ca))
+
 
 class SimpleText(Presentable):
     text = ''
