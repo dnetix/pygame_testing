@@ -49,6 +49,9 @@ while not ended:
     ta.set_text('Angle: ' + str(angle) + 'º').visualize()
     w.visualize()
 
+    v.set_length(speed)
+    v.visualize()
+
     pygame.display.update()
     timer += clock.get_time()
     clock.tick(24)

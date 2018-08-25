@@ -120,6 +120,11 @@ class Vector(Presentable):
         self.update()
         return self
 
+    def set_length(self, length):
+        self.length = length
+        self.update()
+        return self
+
     def des(self):
         return self.res_x, self.res_y
 
@@ -129,11 +134,12 @@ class Vector(Presentable):
         return self
 
     def calculate(self, x_y, length, angle):
-        self.x, self.y = x_y
+        self.move(x_y)
         self.length = length
         self.set_angle(angle)
         return self.des()
 
     def visualize(self):
-        pygame.draw.circle(self.screen, self.color, (int(self.res_x), int(self.res_y)), 4)
-        pygame.draw.line(self.screen, self.color, self.position(), self.des(), 1)
+        if self.length > 0:
+            pygame.draw.circle(self.screen, self.color, (int(self.res_x), int(self.res_y)), 4)
+            pygame.draw.line(self.screen, self.color, self.position(), self.des(), 1)
