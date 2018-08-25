@@ -54,8 +54,12 @@ class Locator:
         return math.sqrt((dx - sx) ** 2 + (dy - sy) ** 2)
 
     def angle(self):
-        sx, sy = self.source.position()
-        dx, dy = self.destination.position()
+        return self.calculate_angle(self.source.position(), self.destination.position())
+
+    @staticmethod
+    def calculate_angle(sx_sy, dx_dy):
+        sx, sy = sx_sy
+        dx, dy = dx_dy
 
         co = dy - sy
         ca = dx - sx
